@@ -1,0 +1,5 @@
+1) Exporta el contenedor a un archivo tarball
+     docker export <CONTAINER ID> > /home/export.tar
+2) Mueve el archivo a una nueva maquina con docker instalado.
+3) Importalo en tu docker.
+     cat /home/export.tar | docker import - some-name:latest
