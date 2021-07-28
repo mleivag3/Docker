@@ -1,0 +1,16 @@
+Copiar archivos a contenedor docke, HOST A DOCKER (bidireccional)
+
+El cp comando se puede usar para copiar archivos.
+
+Se puede copiar un archivo específico AL contenedor como:
+
+docker cp foo.txt mycontainer:/foo.txt
+Se puede copiar un archivo específico del contenedor como:
+
+docker cp mycontainer:/foo.txt foo.txt
+Para enfatizar, mycontaineres una ID de contenedor , no una ID de imagen .
+
+Se srcpueden copiar varios archivos contenidos en la carpeta en la targetcarpeta usando:
+
+docker cp src/. mycontainer:/target
+docker cp mycontainer:/src/. target
