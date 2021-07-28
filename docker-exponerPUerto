@@ -1,0 +1,35 @@
+No puede hacer esto a través de Docker, pero puede acceder al puerto no expuesto del contenedor desde la máquina host.
+
+si tiene un contenedor que tiene algo ejecutándose en su puerto 8000, puede ejecutar
+
+wget http://container_ip:8000
+Para obtener la dirección IP del contenedor, ejecute los 2 comandos:
+
+docker ps
+
+docker inspect container_name | grep IPAddress
+Internamente, Docker se abre para llamar a iptables cuando ejecuta una imagen, por lo que tal vez alguna variación al respecto funcione.
+
+para exponer el puerto 8000 del contenedor en su puerto localhosts 8001:
+
+------------------------------------------------------------------------------------
+iptables -t nat -A  DOCKER -p tcp --dport 8001 -j DNAT --to-destination 172.17.0.19:8000
+
+------------------------------------------------------------------------------------
+
+Una forma de resolver esto es configurar otro contenedor con el mapeo de puertos que desee y comparar la salida del comando iptables-save (aunque tuve que eliminar algunas de las otras opciones que obligan al tráfico a pasar por la ventana acoplable apoderado).
+
+NOTA: esto está subvirtiendo la ventana acoplable, por lo que debe hacerse con la conciencia de que bien puede crear humo azul
+
+O
+
+Otra alternativa es buscar la opción (nueva? Post 0.6.6?) -P, que utilizará puertos de host aleatorios y luego los conectará.
+
+O
+
+con 0.6.5, podría usar la función LINKs para abrir un nuevo contenedor que se comunique con el existente, con alguna transmisión adicional a las banderas -p de ese contenedor. (Todavía no he usado LINKs)
+
+O
+
+con docker 0.11? puede usar docker run --net host ..para adjuntar su contenedor directamente a las interfaces de red del host (es decir, net no está espaciado de nombres) y, por lo tanto, todos los puertos que abre en el contenedor están expuestos.
+
