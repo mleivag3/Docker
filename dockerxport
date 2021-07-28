@@ -1,3 +1,4 @@
+Docker export: 
 1) Exporta el contenedor a un archivo tarball
      docker export <CONTAINER ID> > /home/export.tar
 2) Mueve el archivo a una nueva maquina con docker instalado.
